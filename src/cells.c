@@ -25,3 +25,11 @@ void DrawCellGrid(int XPos, int YPos, unsigned int WindowWidth, unsigned int Win
         DrawLine(XPos, i, XPos+WindowWidth, i, COLOR);
     }
 }
+
+Vector2 GetCellPosition(int MousePosX, int MousePosY, int GridPosX, int GridPosY, unsigned int WindowWidth, unsigned int WindowHeight, unsigned int CellWidth, unsigned int CellHeight) {
+    double OffsetX = MousePosX - GridPosX; 
+    double OffsetY = MousePosY - GridPosY; 
+    int CellPosX = (((int)(OffsetX/CellWidth))*CellWidth)+GridPosX; 
+    int CellPosY = (((int)(OffsetY/CellHeight))*CellHeight)+GridPosY;
+    return (Vector2) {CellPosX, CellPosY}; 
+}
