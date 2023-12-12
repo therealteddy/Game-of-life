@@ -6,8 +6,8 @@
 #include <stdio.h> 
 #include <math.h> 
 
-#define CELL_H 50
-#define CELL_W 50 
+#define CELL_H 300
+#define CELL_W 300
 
 /* Get a 2D array of 1 and 0 for the number of cells within the window */
 void GetCellArray(unsigned int*** Matrix, unsigned int CellWidth, unsigned int CellHeight, unsigned int WindowWidth, unsigned int WindowHeight);
