@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CellCounter <= AllCells) {
             T_CellPosition = GetCellPosition(GetMousePosition().x, GetMousePosition().y, 0, 0, WINDOW_W, WINDOW_H, CELL_W, CELL_H);
             Cell[CellCounter].x = T_CellPosition.x;
             Cell[CellCounter++].y = T_CellPosition.y;
