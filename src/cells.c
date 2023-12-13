@@ -33,3 +33,23 @@ Vector2 GetCellPosition(int MousePosX, int MousePosY, int GridPosX, int GridPosY
     int CellPosY = (((int)(OffsetY/CellHeight))*CellHeight)+GridPosY;
     return (Vector2) {CellPosX, CellPosY}; 
 }
+
+unsigned int GetLiveNeighbours(int** matrix, Vector2 index) {
+    unsigned int counter = 0; 
+
+    // Row below (3 neighbours)
+    counter += (matrix[((int)index.y)-1][((int)index.x)-1]);
+    counter += (matrix[((int)index.y)-1][((int)index.x)+0]);
+    counter += (matrix[((int)index.y)-1][((int)index.x)+1]);
+
+    // Current row (only 2 neighbours) 
+    counter += (matrix[((int)index.y)+0][((int)index.x)-1]);
+    counter += (matrix[((int)index.y)+0][((int)index.x)+1]);
+
+    // Row Above (3 neighbours)
+    counter += (matrix[((int)index.y)+1][((int)index.x)-1]);
+    counter += (matrix[((int)index.y)+1][((int)index.x)+0]);
+    counter += (matrix[((int)index.y)+1][((int)index.x)+1]);
+
+    return counter;    
+}

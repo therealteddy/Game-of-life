@@ -21,4 +21,7 @@ void DrawCellGrid(int XPos, int YPos, unsigned int WindowWidth, unsigned int Win
 /* Approximate the position of a cell from mouse posittion */ 
 Vector2 GetCellPosition(int MousePosX, int MousePosY, int GridPosX, int GridPosY, unsigned int WindowWidth, unsigned int WindowHeight, unsigned int CellWidth, unsigned int CellHeight); 
 
+/* Get the number of live neighbours surrounding a cell */
+unsigned int GetLiveNeighbours(int** matrix, Vector2 index); 
+
 #endif //CELLS_H
