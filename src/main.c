@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
     // Window Pre-requisites
     InitWindow(WINDOW_W, WINDOW_H, WINDOW_T);
-    SetTargetFPS(5);
+    SetTargetFPS(10);
 
     // Application loop
     while(!WindowShouldClose()) {
