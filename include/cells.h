@@ -8,6 +8,12 @@
 
 #define CELL_H 300
 #define CELL_W 300
+#define WINDOW_H 900 
+#define WINDOW_W 900 
+#define WINDOW_T "Game Of Life"
+#define MATRIX_W WINDOW_W/CELL_W
+#define MATRIX_H WINDOW_H/CELL_H
+#define MATRIX_A WINDOW_W*WINDOW_H
 
 /* Get a 2D array of 1 and 0 for the number of cells within the window */
 void GetCellArray(unsigned int*** Matrix, unsigned int CellWidth, unsigned int CellHeight, unsigned int WindowWidth, unsigned int WindowHeight);
@@ -22,6 +28,6 @@ void DrawCellGrid(int XPos, int YPos, unsigned int WindowWidth, unsigned int Win
 Vector2 GetCellPosition(int MousePosX, int MousePosY, int GridPosX, int GridPosY, unsigned int WindowWidth, unsigned int WindowHeight, unsigned int CellWidth, unsigned int CellHeight); 
 
 /* Get the number of live neighbours surrounding a cell */
-unsigned int GetLiveNeighbours(int** matrix, Vector2 index); 
+unsigned int GetLiveNeighbours(int** matrix, unsigned int MatrixWidth, unsigned int MatrixHeight, Vector2 index); 
 
 #endif //CELLS_H

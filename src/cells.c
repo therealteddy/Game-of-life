@@ -34,22 +34,112 @@ Vector2 GetCellPosition(int MousePosX, int MousePosY, int GridPosX, int GridPosY
     return (Vector2) {CellPosX, CellPosY}; 
 }
 
-unsigned int GetLiveNeighbours(int** matrix, Vector2 index) {
+unsigned int GetLiveNeighbours(int** matrix, unsigned int MatrixWidth, unsigned int MatrixHeight, Vector2 index) {
     unsigned int counter = 0; 
+    
+    // If the index position is of a cell within the boundaries
+    if ( ((index.y > 0) && (index.y < (MatrixHeight-1))) && ((index.x > 0) && (index.x < (MatrixWidth-1))) ) {
+        // Row below (3 neighbours)
+        counter += (matrix[((int)index.y)-1][((int)index.x)-1]);
+        counter += (matrix[((int)index.y)-1][((int)index.x)+0]);
+        counter += (matrix[((int)index.y)-1][((int)index.x)+1]);
 
-    // Row below (3 neighbours)
-    counter += (matrix[((int)index.y)-1][((int)index.x)-1]);
-    counter += (matrix[((int)index.y)-1][((int)index.x)+0]);
-    counter += (matrix[((int)index.y)-1][((int)index.x)+1]);
+        // Current row (only 2 neighbours) 
+        counter += (matrix[((int)index.y)+0][((int)index.x)-1]);
+        counter += (matrix[((int)index.y)+0][((int)index.x)+1]);
 
-    // Current row (only 2 neighbours) 
-    counter += (matrix[((int)index.y)+0][((int)index.x)-1]);
-    counter += (matrix[((int)index.y)+0][((int)index.x)+1]);
+        // Row Above (3 neighbours)
+        counter += (matrix[((int)index.y)+1][((int)index.x)-1]);
+        counter += (matrix[((int)index.y)+1][((int)index.x)+0]);
+        counter += (matrix[((int)index.y)+1][((int)index.x)+1]);
+    }
 
-    // Row Above (3 neighbours)
-    counter += (matrix[((int)index.y)+1][((int)index.x)-1]);
-    counter += (matrix[((int)index.y)+1][((int)index.x)+0]);
-    counter += (matrix[((int)index.y)+1][((int)index.x)+1]);
+    // If the index position shows the top leftmost cell 
+    else if (index.x == 0 && index.y == 0) {
+        // Current Row (only 1 neighbour)
+        counter += (matrix[((int)index.y+0)][((int)index.x+1)]); 
 
+        // Row Below (2 neighbours) 
+        counter += (matrix[((int)index.y+1)][((int)index.x+0)]);
+        counter += (matrix[((int)index.y+1)][((int)index.x+1)]);
+    }
+
+    // If the index position shows the top rightmost cell 
+    else if (index.x == (MatrixWidth-1) && index.y == 0) {
+        // Current Row (only 1 neighbour)
+        counter += (matrix[((int)index.y+0)][((int)index.x-1)]); 
+
+        // Row Below (2 neighbours) 
+        counter += (matrix[((int)index.y+1)][((int)index.x+0)]);
+        counter += (matrix[((int)index.y+1)][((int)index.x-1)]);
+    }
+
+    // If the index is the position of any cell in the top row 
+    else if (index.y == 0 && (index.x > 0 && index.x < (MatrixWidth-1))) {
+        // Current Row (2 Neighbours) 
+        counter += (matrix[((int)index.y+0)][((int)index.x-1)]); 
+        counter += (matrix[((int)index.y+0)][((int)index.x+1)]);
+
+        // Row Below (3 Neighbours) 
+        counter += (matrix[((int)index.y+1)][((int)index.x-1)]); 
+        counter += (matrix[((int)index.y+1)][((int)index.x+0)]);
+        counter += (matrix[((int)index.y+1)][((int)index.x+1)]);
+    }
+
+        // If the index position shows the bottom leftmost cell 
+    else if (index.x == 0 && index.y == (MatrixHeight-1)) {
+        // Current Row (only 1 neighbour)
+        counter += (matrix[((int)index.y+0)][((int)index.x+1)]); 
+
+        // Row Below (2 neighbours) 
+        counter += (matrix[((int)index.y-1)][((int)index.x+0)]);
+        counter += (matrix[((int)index.y-1)][((int)index.x+1)]);
+    }
+
+    // If the index position shows the bottom rightmost cell 
+    else if (index.x == (MatrixWidth-1) && index.y == (MatrixHeight-1)) {
+        // Current Row (only 1 neighbour)
+        counter += (matrix[((int)index.y+0)][((int)index.x-1)]); 
+
+        // Row Below (2 neighbours) 
+        counter += (matrix[((int)index.y-1)][((int)index.x+0)]);
+        counter += (matrix[((int)index.y-1)][((int)index.x-1)]);
+    }
+
+    // If the index is the position of any cell in the bottom row 
+    else if (index.y == (MatrixHeight-1) && (index.x > 0 && index.x < (MatrixWidth-1))) {
+        // Current Row (2 Neighbours) 
+        counter += (matrix[((int)index.y+0)][((int)index.x-1)]); 
+        counter += (matrix[((int)index.y+0)][((int)index.x+1)]);
+
+        // Row Below (3 Neighbours) 
+        counter += (matrix[((int)index.y-1)][((int)index.x-1)]); 
+        counter += (matrix[((int)index.y-1)][((int)index.x+0)]);
+        counter += (matrix[((int)index.y-1)][((int)index.x+1)]);
+    }
+
+    // If the cell is in the leftmost coulumn 
+    else if (index.x == 0 && (index.y > 0 && index.y < (MatrixHeight-1))) {
+        // Current Coloumn (2 Neighbours) 
+        counter += (matrix[((int)index.y-1)][(int)index.x+0]);
+        counter += (matrix[((int)index.y+1)][(int)index.x+0]);
+
+        // Next coloumn (3 Neighbours) 
+        counter += (matrix[((int)index.y-1)][((int)index.x+1)]);
+        counter += (matrix[((int)index.y+0)][((int)index.x+1)]);
+        counter += (matrix[((int)index.y+1)][((int)index.x+1)]);
+    }
+
+     // If the cell is in the rightmost coulumn 
+    else if (index.x == (MatrixWidth-1) && (index.y > 0 && index.y < (MatrixHeight-1))) {
+        // Current Coloumn (2 Neighbours) 
+        counter += (matrix[((int)index.y-1)][(int)index.x+0]);
+        counter += (matrix[((int)index.y+1)][(int)index.x+0]);
+
+        // Previous coloumn (3 Neighbours) 
+        counter += (matrix[((int)index.y-1)][((int)index.x-1)]);
+        counter += (matrix[((int)index.y+0)][((int)index.x-1)]);
+        counter += (matrix[((int)index.y+1)][((int)index.x-1)]);
+    }
     return counter;    
 }
