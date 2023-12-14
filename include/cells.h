@@ -6,10 +6,10 @@
 #include <stdio.h> 
 #include <math.h> 
 
-#define CELL_H 300
-#define CELL_W 300
-#define WINDOW_H 900 
-#define WINDOW_W 900 
+#define CELL_H 50
+#define CELL_W 50
+#define WINDOW_H 1000 
+#define WINDOW_W 1000
 #define WINDOW_T "Game Of Life"
 #define MATRIX_W WINDOW_W/CELL_W
 #define MATRIX_H WINDOW_H/CELL_H
