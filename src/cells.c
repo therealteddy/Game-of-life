@@ -143,3 +143,10 @@ unsigned int GetLiveNeighbours(int** matrix, unsigned int MatrixWidth, unsigned 
     }
     return counter;    
 }
+
+void DeleteCellArray(unsigned int*** matrix) {
+    for (int i = 0; i < MATRIX_H; ++i) {
+        free((*matrix)[i]); 
+    }
+    free(*matrix);
+}

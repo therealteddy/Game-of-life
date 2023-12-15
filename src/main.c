@@ -10,8 +10,12 @@
 #include "cells.h"
 #include "life.h"
 
+#define FPS_CAP 10
 
 int main(int argc, char* argv[]) {
+    /* Count the generation */ 
+    unsigned int GenerationCounter = 0; 
+
     /* Define a 2D array of cells */
     unsigned int** current_matrix; 
     unsigned int** next_matrix; 
@@ -43,16 +47,22 @@ int main(int argc, char* argv[]) {
 
     // Window Pre-requisites
     InitWindow(WINDOW_W, WINDOW_H, WINDOW_T);
-    SetTargetFPS(10);
+    SetTargetFPS(FPS_CAP);
 
     // Application loop
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
+        /* Draw the current generation number */
+        DrawText(TextFormat("Generation = %u\n", GenerationCounter++), 0, 0, 25, BLACK);
+
         // Draw grid
         DrawCellGrid(0, 0, WINDOW_W, WINDOW_H, CELL_W, CELL_H, BLACK);
         
+        // Print the current generation - disable if the grid is large!
+        //PrintCellArray(current_matrix, CELL_W, CELL_H, WINDOW_W, WINDOW_H); 
+
         // Draw the current cells
         for (int j = 0; j < MATRIX_H; ++j) {
             for (int i = 0; i < MATRIX_W; ++i) {
@@ -60,7 +70,7 @@ int main(int argc, char* argv[]) {
                     DrawRectangle(i*CELL_W, j*CELL_H, CELL_W, CELL_H, RED);
             }
         }      
-        PrintCellArray(current_matrix, CELL_W, CELL_H, WINDOW_W, WINDOW_H); 
+        
         
         // update the cell matrix
         for (int j = 0; j < MATRIX_H; ++j) {
@@ -69,8 +79,8 @@ int main(int argc, char* argv[]) {
             }
         }
         
-        // Get ready for the next generation 
-        // TODO: Implement a function to free all the pointers within current_matrix 
+        // Get ready for the next generation  
+        DeleteCellArray(&current_matrix); 
         current_matrix = next_matrix;
         GetCellArray(&next_matrix, CELL_W, CELL_H, WINDOW_W, WINDOW_H);
 
