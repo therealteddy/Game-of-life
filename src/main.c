@@ -106,18 +106,27 @@ int main(int argc, char* argv[]) {
         nk_end(ctx);
 
         // Simulation State Panel (3rd)
-        if (nk_begin(ctx, "Simulation State", nk_rect(GRID_W, 750, WINDOW_W-GRID_H, 100), NK_WINDOW_TITLE | NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR)) {
+        if (nk_begin(ctx, "Simulation State", nk_rect(GRID_W, 750, WINDOW_W-GRID_H, 150), NK_WINDOW_TITLE | NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR)) {
             // Start and Stop Simulation? 
-            nk_layout_row_static(ctx, 40, 130, 2); 
+            nk_layout_row_static(ctx, 50, 145, 2); 
             if (nk_button_label(ctx, "Run! ")) UpdateMatrix = ENABLE; 
             if (nk_button_label(ctx, "Stop!")) UpdateMatrix = DISABLE; 
+
+            // Reset Button 
+            nk_layout_row_static(ctx, 50, 300, 1); 
+            if (nk_button_label(ctx, "Reset!") && !UpdateMatrix) { // Clear and reset the matrix
+                DeleteCellArray(&current_matrix); 
+                GetCellArray(&current_matrix, CELL_W, CELL_H, GRID_W, GRID_H);
+                // Reset Generation Counter
+                GenerationCounter = 0;
+            }
         }
         nk_end(ctx); 
 
         // Help Panel 
-        if (nk_begin(ctx, "Help!", nk_rect(GRID_W, 850, WINDOW_W-GRID_W, 150), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_NO_SCROLLBAR)) {
+        if (nk_begin(ctx, "Help!", nk_rect(GRID_W, 900, WINDOW_W-GRID_W, 150), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_NO_SCROLLBAR)) {
+            nk_layout_row_static(ctx, 50, 145, 2); 
             // About Button 
-            nk_layout_row_static(ctx, 40, 300, 1); 
             if (nk_button_label(ctx, "About")) {
                 #ifdef _WIN32 
                     // Windows
@@ -134,7 +143,6 @@ int main(int argc, char* argv[]) {
                 #endif
             }
             // Usage Panel 
-            nk_layout_row_static(ctx, 40, 300, 1); 
             if (nk_button_label(ctx, "Usage")) {
                 #ifdef _WIN32
                     // Windows (Fix this and add documentation!)
