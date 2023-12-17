@@ -6,8 +6,8 @@
 #include <stdio.h> 
 #include <math.h> 
 
-#define CELL_H 50
-#define CELL_W 50
+#define CELL_H 25
+#define CELL_W 25
 
 #define GRID_W 1000 
 #define GRID_H 1000

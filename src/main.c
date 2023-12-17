@@ -4,18 +4,19 @@
    Date: 12-Dec-23 
 */
 #include <stdlib.h> 
+#include <stdio.h>
+
+#include <raylib.h>
 
 #define RAYLIB_NUKLEAR_IMPLEMENTATION
 #define NK_INCLUDE_FIXED_TYPES
 #include <raylib-nuklear.h>
 
-#include <raylib.h>
-#include <stdio.h>
-
 #include "cells.h"
 #include "life.h"
 
 #define FPS_CAP 10
+#define FONTSIZE 20
 
 int main(int argc, char* argv[]) {
     /* Colors */ 
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]) {
     /* Nuklear structures */ 
     struct nk_context* ctx; 
     
-    ctx = InitNuklear(20); 
+    ctx = InitNuklear(FONTSIZE); 
 
     /* Count the generation */ 
     unsigned int GenerationCounter = 0; 
@@ -87,6 +88,7 @@ int main(int argc, char* argv[]) {
             if (nk_option_label(ctx, "Disable", PrintMatrix == DISABLE)) PrintMatrix = DISABLE; 
         }
         nk_end(ctx);
+
         // Color Picker Panel (2nd) 
         if (nk_begin(ctx, "Color Picker", nk_rect(GRID_W, 100, WINDOW_W-GRID_W, 650), NK_WINDOW_TITLE | NK_WINDOW_BORDER )) {
             // Color Picker for cells
@@ -102,6 +104,7 @@ int main(int argc, char* argv[]) {
             nk_label(ctx, "Grid Color", NK_TEXT_ALIGN_CENTERED);
         }
         nk_end(ctx);
+
         // Simulation State Panel (3rd)
         if (nk_begin(ctx, "Simulation State", nk_rect(GRID_W, 750, WINDOW_W-GRID_H, 100), NK_WINDOW_TITLE | NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR)) {
             // Start and Stop Simulation? 
@@ -110,6 +113,7 @@ int main(int argc, char* argv[]) {
             if (nk_button_label(ctx, "Stop!")) UpdateMatrix = DISABLE; 
         }
         nk_end(ctx); 
+
         // Help Panel 
         if (nk_begin(ctx, "Help!", nk_rect(GRID_W, 850, WINDOW_W-GRID_W, 150), NK_WINDOW_BORDER | NK_WINDOW_TITLE | NK_WINDOW_NO_SCROLLBAR)) {
             // About Button 
@@ -153,20 +157,17 @@ int main(int argc, char* argv[]) {
         BeginDrawing();
         ClearBackground(ColorFromNuklearF(BaseColor));
 
-        /* Draw the current generation number */
-        DrawText(TextFormat("Generation = %u\n", GenerationCounter), CELL_W/2, CELL_H/2, 25, BLACK);
-
-        // Draw grid
-        DrawCellGrid(0, 0, GRID_W, GRID_H, CELL_W, CELL_H, BLACK);
-
         // Draw the current cells
         for (int j = 0; j < MATRIX_H; ++j) {
             for (int i = 0; i < MATRIX_W; ++i) {
                 if (current_matrix[j][i])
                     DrawRectangle(i*CELL_W, j*CELL_H, CELL_W, CELL_H, ColorFromNuklearF(CellColor));
             }
-        }      
-        
+        }
+
+        /* Draw the current generation number/frame time/fps over the cells */
+        DrawText(TextFormat("Generation = %u\n", GenerationCounter), 0, 0, CELL_H, BLACK);      
+
         // Run the simulation 
         if (UpdateMatrix) {
             // Print the current generation - disable if the grid is large!
@@ -187,19 +188,21 @@ int main(int argc, char* argv[]) {
 
             // Update the Generation counter 
             GenerationCounter++;
-        } else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        } else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) { // Check is the mouse is within grid and get a suitable matrix position
                 cell_position = GetCellPosition(GetMousePosition().x, GetMousePosition().y, 0, 0, CELL_W, CELL_H); 
                 if ((cell_position.x/CELL_W >= 0 && cell_position.x/CELL_W < MATRIX_W) && (cell_position.y/CELL_H >= 0 && cell_position.y/CELL_H < MATRIX_H)) {
                     current_matrix[((int)cell_position.y)/CELL_H][((int)cell_position.x)/CELL_W] = !current_matrix[((int)cell_position.y)/CELL_H][((int)cell_position.x)/CELL_W]; 
                 }
-        }
-        
+        } 
+
+        // Draw grid over the cells 
+        DrawCellGrid(0, 0, GRID_W, GRID_H, CELL_W, CELL_H, BLACK);
 
         // Draw Nuklear 
         DrawNuklear(ctx); 
         EndDrawing(); 
     }
-
+    
     UnloadNuklear(ctx);
     CloseWindow();
     return 0; 
